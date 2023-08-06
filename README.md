@@ -1,6 +1,11 @@
 # inference-compare
 Comparing major ML serving frameworks
 
+### Testing on models:
+* Chatting model - https://huggingface.co/microsoft/DialoGPT-medium
+* Speech to text - https://huggingface.co/facebook/wav2vec2-base-960h
+* Image recognition - https://huggingface.co/google/vit-base-patch16-224
+
 # Torchserve
 * Download model from GIT LFS. Check out the repo and download only one needed file.
 ```bash
@@ -19,6 +24,11 @@ torch-model-archiver --model-name "dialogpt" --version 1.0 --serialized-file ./D
 * Run serve.
 ```bash
 torchserve --start --model-store model_store/ --models dialogpt=dialogpt.mar
+```
+
+* Ask model for results (locally).
+```bash
+curl -X POST http://localhost:8080/predictions/{model_name} -T {test_file}
 ```
 
 * Stop serve.
