@@ -1,10 +1,11 @@
 
 from abc import ABC
-import json
 import logging
-import os
 
 import torch
+import numpy as np
+import io
+import soundfile as sf
 from transformers import Wav2Vec2Processor, Wav2Vec2ForCTC
 
 from ts.torch_handler.base_handler import BaseHandler
@@ -42,20 +43,19 @@ class TransformersClassifierHandler(BaseHandler, ABC):
         """ Very basic preprocessing code - only tokenizes. 
             Extend with your own preprocessing steps as needed.
         """
-        text = data[0].get("data")
-        if text is None:
-            text = data[0].get("body")
-        sentences = text.decode('utf-8')
-        logger.info("Received text: '%s'", sentences)
-        new_user_input_ids = self.tokenizer.encode(sentences + self.tokenizer.eos_token, return_tensors='pt')
-        return new_user_input_ids
+        wavData = data[0].get("data")
+        if wavData is None:
+            wavData = data[0].get("body")
 
-    def inference(self, inputs):
-        logits = self.model(inputs).logits
+        data, _ = sf.read(io.BytesIO(wavData))
+        sample = np.array(data, dtype=float)
+        return sample
+
+    def inference(self, sample):
+        input_values = self.processor(sample, return_tensors="pt", padding="longest").input_values  # Batch size 1
+        logits = self.model(input_values).logits
         predicted_ids = torch.argmax(logits, dim=-1)
-        output = self.processor.batch_decode(predicted_ids)
-
-        return [output]
+        return self.processor.batch_decode(predicted_ids)
 
     def postprocess(self, inference_output):
         # TODO: Add any needed post-processing of the model predictions here
