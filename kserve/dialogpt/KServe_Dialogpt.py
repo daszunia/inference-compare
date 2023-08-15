@@ -24,8 +24,6 @@ class KServe_Dialogpt(kserve.Model):
         jsonStr = request.decode("utf-8")
         jsonObj = json.loads(jsonStr)
 
-        # Input follows the Tensorflow V1 HTTP API for binary values
-        # https://www.tensorflow.org/tfx/serving/api_rest#encoding_binary_values
         input = jsonObj["data"]
         inputs = self.tokenizer.encode(input + self.tokenizer.eos_token, return_tensors='pt')
         bot_input_ids = torch.cat([self.chat_history_ids, inputs], dim=-1)

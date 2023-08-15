@@ -51,3 +51,17 @@ kind load docker-image localhost:32000/dialogpt-test
 ```bash
 kubectl apply -f deployment.yaml
 ```
+
+# KServe
+* Deploy istio (for example 1.17.2)
+* Deploy KServe related CRDs
+* Build dockerfile, upload, apply deployment
+* Port forward the pod
+```bash
+kubectl port-forward -n kserve kserve-custom-vision-predictor-00001-deployment-55bc9cc4c6658wn 8080:8080
+```
+
+* Ask for results (locally)
+```bash
+curl localhost:8080/v1/models/kserve-custom-dialogpt:predict -d "{ \"data\": \"How to get rich fast\" }"
+```
