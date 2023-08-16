@@ -1,0 +1,20 @@
+apiVersion: serving.kserve.io/v1beta1
+kind: InferenceService
+metadata:
+  labels:
+    controller-tools.k8s.io: "1.0"
+  name: kserve-custom-wav2vec
+  namespace: kserve
+spec:
+  predictor:
+    containers:
+      - name: kserve-custom-wav2vec
+        image: localhost:5001/kserve-custom-wav2vec
+        imagePullPolicy: IfNotPresent
+        resources:
+          requests:
+            memory: "4096Mi"
+            cpu: "250m"
+          limits:
+            memory: "4096Mi"
+            cpu: "500m"     

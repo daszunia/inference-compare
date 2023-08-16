@@ -65,3 +65,8 @@ kubectl port-forward -n kserve kserve-custom-vision-predictor-00001-deployment-5
 ```bash
 curl localhost:8080/v1/models/kserve-custom-dialogpt:predict -d "{ \"data\": \"How to get rich fast\" }"
 ```
+
+* For sending wav files use different data flag
+```bash
+curl localhost:8080/v1/models/kserve-custom-wav2vec:predict --data-binary @./voice.wav
+```
