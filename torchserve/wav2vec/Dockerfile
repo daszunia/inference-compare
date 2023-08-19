@@ -19,7 +19,7 @@ COPY --from=model /src/model/pytorch_model.bin .
 COPY --from=model /src/model/config.json .
 COPY --from=model /src/model/vocab.json .
 
-RUN python -m pip install transformers
+RUN python -m pip install transformers soundfile numpy
 
 RUN torch-model-archiver \
     --model-name "wav2vec" \

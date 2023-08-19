@@ -34,7 +34,6 @@ class TransformersClassifierHandler(BaseHandler, ABC):
 
         self.model.to(self.device)
         self.model.eval()
-        self.chat_history_ids = torch.zeros(size=(1,0), dtype=int)  # Empty chat history -> empty tensor of shape (1,0)
 
         logger.debug('Transformer model from path {0} loaded successfully'.format(model_dir))
         self.initialized = True
@@ -52,14 +51,8 @@ class TransformersClassifierHandler(BaseHandler, ABC):
         return new_user_input_ids
 
     def inference(self, inputs):
-        """
-        Predict the class of a text using a trained transformer model.
-        """
-        # NOTE: This makes the assumption that your model expects text to be tokenized  
-        # with "input_ids" and "token_type_ids" - which is true for some popular transformer models, e.g. bert.
-        # If your transformer model expects different tokenization, adapt this code to suit 
-        # its expected input format.
-        bot_input_ids = torch.cat([self.chat_history_ids, inputs], dim=-1)
+        chat_history_ids = torch.zeros(size=(1,0), dtype=int)
+        bot_input_ids = torch.cat([chat_history_ids, inputs], dim=-1)
         chat_history_ids = self.model.generate(bot_input_ids, max_length=1000, pad_token_id=self.tokenizer.eos_token_id)
         output = self.tokenizer.decode(chat_history_ids[:, bot_input_ids.shape[-1]:][0], skip_special_tokens=True)
 

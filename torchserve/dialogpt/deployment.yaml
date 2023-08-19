@@ -33,7 +33,7 @@ spec:
     spec:
       containers:
       - name: dialogpt-torchserve
-        image: localhost:32000/dialogpt-test
+        image: localhost:5001/dialogpt-test
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8080

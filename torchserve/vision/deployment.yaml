@@ -33,7 +33,7 @@ spec:
     spec:
       containers:
       - name: vis-torchserve
-        image: localhost:32000/vis-test
+        image: localhost:5001/vis-test
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8080

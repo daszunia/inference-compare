@@ -33,7 +33,7 @@ spec:
     spec:
       containers:
       - name: wav2vec-torchserve
-        image: localhost:32000/wav2vec-test
+        image: localhost:5001/wav2vec-test
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8080

@@ -19,8 +19,9 @@ git lfs pull --include "pytorch_model.bin"
 * Create `model_store` directory.
 * Run toch archiver to transform model into *.mar format.
 ```bash
-torch-model-archiver --model-name "dialogpt" --version 1.0 --serialized-file ./DialoGPT-medium/pytorch_model.bin --extra-files "./DialoGPT-medium/config.json,./DialoGPT-medium/vocab.json" --handler ./inference-compare/dialogpt-handler.py
+torch-model-archiver --model-name "dialogpt" --version 1.0 --serialized-file ./DialoGPT-medium/pytorch_model.bin --extra-files "./DialoGPT-medium/config.json,./DialoGPT-medium/vocab.json" --handler ./inference-compare/torchserve/dialogpt/dialogpt-handler.py
 ```
+* Move the *.mar file into `model_store` directory.
 * Run serve.
 ```bash
 torchserve --start --model-store model_store/ --models dialogpt=dialogpt.mar
