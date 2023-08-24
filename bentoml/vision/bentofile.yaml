@@ -1,0 +1,11 @@
+service: 'service:svc'
+include:
+  - '*.py'
+python:
+  packages:
+    - torch
+    - transformers
+    - pillow
+    - requests
+models:
+  - vis_model:latest

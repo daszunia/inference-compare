@@ -71,3 +71,36 @@ curl localhost:8080/v1/models/kserve-custom-dialogpt:predict -d "{ \"data\": \"H
 ```bash
 curl localhost:8080/v1/models/kserve-custom-wav2vec:predict --data-binary @./voice.wav
 ```
+
+# Tensorflow
+
+* Download pre-trained model
+* Process the model to be saved in tensorflow accepted format.
+* Be careful to check what should be the new class compatible with TF. \
+  For example `AutoModelForCausalLM` becomes `TFGPT2LMHeadModel`.
+* Prepare pre-processing and post-processing scripts.
+* Inject them into saved model and export.
+* Download tensorflow serving docker image.
+
+Unfortunately, it's impossible to inject arbitrary Python objects and code into TFServing routines that serve our model. All operations need to be compatible with TensorFlow computational graphs. Because we rely on Huggingface tokenizers, it's impossible to use them out-of-the-box with TFServing without any considerable modifications. These modifications may involve converting Huggingface tokenizers into TensorFlow tokenizers[https://github.com/Hugging-Face-Supporter/tftokenizers], relying on a rather untested (5 GitHub stars) and unmaintained (last modifications > 1 year ago) library.
+
+https://discuss.huggingface.co/t/is-that-possible-to-embed-the-tokenizer-into-the-model-to-have-it-running-on-gcp-using-tensorflow-serving/10532
+
+
+# BentoML
+
+To run locally:
+* Install `bentoml` via pip.
+* Save model to local bentoml repository. (run `dialogpt-save-model.py` script)
+* Run local server with `bentoml serve service:svc` in project directory.
+* Ask for result by running (url is a name of the async function in `service.py`)
+```bash
+curl -X 'POST' http://0.0.0.0:3000/dialogpt -H 'accept: text/plain' -H 'Content-Type: text/plain' -d 'Hello, my name is XX how are you'
+```
+
+To run on kubernetes:
+* Run `bentoml build`
+* Wrap into a docker image with `bentoml containerize vis-service:latest`
+* Re-tag the image if needed
+* Load the image into local registry, for example `kind load docker-image localhost:5001/vis-bento`
+* Apply deployment
