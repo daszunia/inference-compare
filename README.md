@@ -97,6 +97,10 @@ To run locally:
 ```bash
 curl -X 'POST' http://0.0.0.0:3000/dialogpt -H 'accept: text/plain' -H 'Content-Type: text/plain' -d 'Hello, my name is XX how are you'
 ```
+* For the audio file
+```bash
+curl -X POST http://0.0.0.0:3000/wav2vec --data-binary @../../torchserve/wav2vec/f2bjrop1.0.wav
+```
 
 To run on kubernetes:
 * Run `bentoml build`
