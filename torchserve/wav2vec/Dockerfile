@@ -30,4 +30,4 @@ RUN torch-model-archiver \
 
 RUN mv wav2vec.mar ./model_store/
 
-CMD ["torchserve", "--start", "--model-store", "./model_store/", "--models", "wav2vec=wav2vec.mar"]
+CMD ["torchserve", "--start", "--model-store", "./model_store/", "--models", "wav2vec=wav2vec.mar", "--ts-config", "./config.properties"]

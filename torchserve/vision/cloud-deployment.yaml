@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: wav2vec-torchserve-svc
+  name: vis-torchserve-svc
 spec:
   selector:
-    app: wav2vec-torchserve
+    app: vis-torchserve
   ports:
   - protocol: "TCP"
     name: http
@@ -20,20 +20,20 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: wav2vec-torchserve
+  name: vis-torchserve
 spec:
   selector:
     matchLabels:
-      app: wav2vec-torchserve
+      app: vis-torchserve
   replicas: 1
   template:
     metadata:
       labels:
-        app: wav2vec-torchserve
+        app: vis-torchserve
     spec:
       containers:
-      - name: wav2vec-torchserve
-        image: localhost:5001/wav2vec-test
+      - name: vis-torchserve
+        image: europe-central2-docker.pkg.dev/careful-rock-397919/mgr-image-registry/vis-torchserve
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8080

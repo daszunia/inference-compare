@@ -30,4 +30,4 @@ RUN torch-model-archiver \
 
 RUN mv dialogpt.mar ./model_store/
 
-CMD ["torchserve", "--start", "--model-store", "./model_store/", "--models", "dialogpt=dialogpt.mar"]
+CMD ["torchserve", "--start", "--model-store", "./model_store/", "--models", "dialogpt=dialogpt.mar", "--ts-config", "./config.properties"]

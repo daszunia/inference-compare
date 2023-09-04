@@ -30,4 +30,4 @@ RUN torch-model-archiver \
 
 RUN mv vis.mar ./model_store/
 
-CMD ["torchserve", "--start", "--ncs", "--model-store", "./model_store/", "--models", "vis=vis.mar"]
+CMD ["torchserve", "--start", "--ncs", "--model-store", "./model_store/", "--models", "vis=vis.mar", "--ts-config", "./config.properties"]

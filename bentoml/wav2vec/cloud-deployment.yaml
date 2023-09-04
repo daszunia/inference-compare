@@ -1,0 +1,37 @@
+
+apiVersion: v1
+kind: Service
+metadata:
+    labels:
+        app: wav2vec-bento
+    name: wav2vec-bento
+spec:
+    ports:
+    - name: predict
+      port: 3000
+      targetPort: 3000
+    selector:
+      app: wav2vec-bento
+    type: LoadBalancer
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    labels:
+        app: wav2vec-bento
+    name: wav2vec-bento
+spec:
+    selector:
+        matchLabels:
+            app: wav2vec-bento
+    template:
+        metadata:
+            labels:
+                app: wav2vec-bento
+        spec:
+            containers:
+            - image: europe-central2-docker.pkg.dev/careful-rock-397919/mgr-image-registry/wav2vec-bento
+              imagePullPolicy: IfNotPresent
+              name: wav2vec-bento
+              ports:
+              - containerPort: 3000
